@@ -12,20 +12,19 @@ module.exports.run = async (bot, message, args) => {
 
     let embedMessage = "";
 
-    const candidates = args.slice(1);
+    const candidates = args.slice(1, args.length - 2);
 
     const indexToEmoji = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
     candidates.forEach(item => {
         embedMessage += `${indexToEmoji[candidates.indexOf(item)]} - ${item} \n\n`;
-        console.log(item);
     })
 
     const embed = new Discord.MessageEmbed()
         .setColor("#EE3030")
         .setTitle("Welcome to the Election")
         //.setURL("https://www.youtube.com/watch?v=oHg5SJYRHA0")
-        .setThumbnail("https://i.redd.it/dvj5rg226de41.jpg")
+        .setImage("https://i.imgur.com/NzXBam8.png")
         .addField("CANDIDATES", embedMessage, true)
         .setFooter("Please remember to vote. Voting will only last for a period of time");
 
@@ -42,9 +41,10 @@ module.exports.run = async (bot, message, args) => {
         users: candidates,
     }
 
-    fs.writeFile("./data.json", JSON.stringify(data), function(err) {
+    fs.writeFile(`./data-${args[args.length - 1]}.json`, JSON.stringify(data), function(err) {
         if(err) {
-            return console.log(err);
+            message.channel.send("```\n" + err + "\n```");
+            return;
         }
         console.log("The file was saved!");
     }); 
