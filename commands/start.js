@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args) => {
         .setColor("#EE3030")
         .setTitle("Welcome to the Election")
         //.setURL("https://www.youtube.com/watch?v=oHg5SJYRHA0")
-        .setImage("https://i.imgur.com/NzXBam8.png")
+        .setImage("https://i.imgur.com/NzXBam8.png`")
         .addField("CANDIDATES", embedMessage, true)
         .setFooter("Please remember to vote. Voting will only last for a period of time");
 
