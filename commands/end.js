@@ -11,6 +11,8 @@ module.exports.run = async (bot, message, args) => {
         }
     }));
 
+    let tied = false;
+
     const indexToEmoji = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
     const votedUsers = [];
@@ -27,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
             const returnedUserList = [];
 
             userList.map((user) => user.id).forEach(u => {
-              if(!votedUsers.includes(u)) {
+              if(!votedUsers.includes(u) || u != "860937161679568928") {
                 returnedUserList.push(u);
                 votedUsers.push(u);
               }
@@ -38,22 +40,64 @@ module.exports.run = async (bot, message, args) => {
         await votes.push(reactions.length);
     });
 
-    setTimeout(async () => {
+    const formatTiedUsers = (users) => {
+      let res = "";
+      users.forEach(u => {
+        //console.log(u);
+        res += `${candidates[u]} `;
+      });
+    }
 
+    setTimeout(async () => {
+      
   
-      const highestVote = Math.max(...votes);
-  
-      const embed = new Discord.MessageEmbed()
-        .setTitle("RESULTS")
-        .setColor("#EE3030")
-        .setImage("https://i.redd.it/dvj5rg226de41.jpg")
-        .addField("The Winner Is", candidates[votes.indexOf(highestVote)])
-        .setFooter(`With a total of ${highestVote - 1} votes`);
+      const highestVote = votes[0];
+      let tiedUsers = [];
+
+      for(let i = 1; i < votes.length; i++) {
+
+        if(votes[i] > highestVote) {
+          console.log(votes[i])
+          console.log(highestVote)
+
+          highestVote = votes[i];
+          tiedUsers = [];
+          tiedUsers.push(i);
+          tied = false;
+        } else if(votes[i] == highestVote) {
+          console.log("higest vote" + highestVote);
+          tied = true;
+          tiedUsers.push(i);
+        }
+
+        console.log(votes[i])
+        console.log(highestVote)
+        console.log("---------------");
+      }
+
+      const embed = new Discord.MessageEmbed();
+
+      if(tied) {
+          embed
+          .setTitle("RESULTS")
+          .setColor("#EE3030")
+          .setImage("https://i.redd.it/dvj5rg226de41.jpg")
+          .addField(`There was a tie between ${formatTiedUsers(tiedUsers)}`)
+          .setFooter(`Both with a total of ${highestVote - 1} votes`);
+      } else {
+        embed
+          .setTitle("RESULTS")
+          .setColor("#EE3030")
+          .setImage("https://i.redd.it/dvj5rg226de41.jpg")
+          .addField("The Winner Is", candidates[votes.indexOf(highestVote)])
+          .setFooter(`With a total of ${highestVote - 1} votes`);
+      }
   
       await bot.channels.cache.get(data.channelID).send(embed);
     }, 1000);
 
 }
+
 
 
 module.exports.help = {

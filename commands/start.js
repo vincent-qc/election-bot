@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, args) => {
 
     if(Math.random() > 0.9) embed.setURL("https://www.youtube.com/watch?v=oHg5SJYRHA0");
 
-    const msg = await channel.send(embed);
+    const msg = await message.channel.send(embed);
 
     for(let i = 0; i < candidates.length; i++) {
         await msg.react(indexToEmoji[i]);
