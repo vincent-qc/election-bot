@@ -1,5 +1,7 @@
 # Election Bot to Bring Democracy to your Discord Servers
 
+**DISCLAIMER** - I am not responsible for any stroke trying to read this code. I myself can't even decrypt what I wrote (as I was high on caffine yesterday night), so gl trying to so yourself.
+
 ### Setup
 
 - Install `Node.js` and `Discord.js`

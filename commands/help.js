@@ -4,7 +4,8 @@ module.exports.run = async (bot, message, args) => {
 
     const embed = new Discord.MessageEmbed()
         .setTitle("Github Documentation Here")
-        .setURL("https://bit.ly/3yt3UpX");
+        .setURL("https://bit.ly/3yt3UpX")
+        .addField("For now, Only Ewan and Vincent can operate this bot (as i don't want anyone DDoSing me internally");
 
     message.channel.send(embed);
 }

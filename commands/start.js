@@ -1,8 +1,11 @@
 const Discord = require("discord.js");
 const fs = require('fs');
 
+const allowedOperators = ["586024151932731393", "585653754888716290"];
+
 module.exports.run = async (bot, message, args) => {
-    if(message.author.id != 585653754888716290) return;
+    if(!allowedOperators.includes(message.author.id)) return message.channel.send("You do not have the perms to operate this bot. If you believe this is a mistake, contact `Crabo_#7498`");
+
     if(args.length < 3) {
         message.channel.send("Not enough args");
         return;
@@ -32,7 +35,7 @@ module.exports.run = async (bot, message, args) => {
 
     if(Math.random() > 0.9) embed.setURL("https://www.youtube.com/watch?v=oHg5SJYRHA0");
 
-    const msg = await message.channel.send(embed);
+    const msg = await channel.send(embed);
 
     for(let i = 0; i < candidates.length; i++) {
         await msg.react(indexToEmoji[i]);

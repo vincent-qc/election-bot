@@ -1,8 +1,10 @@
 const Discord = require("discord.js");
 fs = require('fs');
 
+const allowedOperators = ["586024151932731393", "585653754888716290"];
+
 module.exports.run = async (bot, message, args) => {
-    if(message.author.id != 585653754888716290) return;
+    if(!allowedOperators.includes(message.author.id)) return message.channel.send("You do not have the perms to operate this bot. If you believe this is a mistake, contact `Crabo_#7498`");
 
     const data = JSON.parse(fs.readFileSync(`./data-${args[0]}.json`, 'utf8' , (err, data) => {
         if (err) {
@@ -37,42 +39,39 @@ module.exports.run = async (bot, message, args) => {
 
             return returnedUserList;
         });
+        console.log(reactions.length);
         await votes.push(reactions.length);
     });
+
 
     const formatTiedUsers = (users) => {
       let res = "";
       users.forEach(u => {
-        //console.log(u);
-        res += `${candidates[u]} `;
+        res += `${candidates[u]}   `;
       });
+
+      return res;
     }
 
     setTimeout(async () => {
       
   
-      const highestVote = votes[0];
-      let tiedUsers = [];
+      let highestVote = votes[0];
+      let tiedUsers = [0];
 
       for(let i = 1; i < votes.length; i++) {
 
         if(votes[i] > highestVote) {
-          console.log(votes[i])
-          console.log(highestVote)
 
           highestVote = votes[i];
           tiedUsers = [];
           tiedUsers.push(i);
           tied = false;
         } else if(votes[i] == highestVote) {
-          console.log("higest vote" + highestVote);
+
           tied = true;
           tiedUsers.push(i);
         }
-
-        console.log(votes[i])
-        console.log(highestVote)
-        console.log("---------------");
       }
 
       const embed = new Discord.MessageEmbed();
@@ -82,7 +81,7 @@ module.exports.run = async (bot, message, args) => {
           .setTitle("RESULTS")
           .setColor("#EE3030")
           .setImage("https://i.redd.it/dvj5rg226de41.jpg")
-          .addField(`There was a tie between ${formatTiedUsers(tiedUsers)}`)
+          .addField("Tie!", `There was a tie between ${formatTiedUsers(tiedUsers)}`, true)
           .setFooter(`Both with a total of ${highestVote - 1} votes`);
       } else {
         embed
@@ -94,6 +93,13 @@ module.exports.run = async (bot, message, args) => {
       }
   
       await bot.channels.cache.get(data.channelID).send(embed);
+
+      try {
+        fs.unlinkSync(`./data-${args[0]}.json`);
+
+      } catch(err) {
+          
+      }
     }, 1000);
 
 }
