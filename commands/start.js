@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args) => {
 
     let embedMessage = "";
 
-    const candidates = args.slice(1, args.length - 2);
+    const candidates = args.slice(1, args.length - 1);
 
     const indexToEmoji = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
