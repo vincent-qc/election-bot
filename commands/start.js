@@ -23,11 +23,14 @@ module.exports.run = async (bot, message, args) => {
     const embed = new Discord.MessageEmbed()
         .setColor("#EE3030")
         .setTitle("Welcome to the Election")
+        .setDescription("PLEASE REMEMBER TO ONLY VOTE FOR ONE CANDIDATE\nEXTRA VOTES WILL **NOT** BE COUNTED")
         //.setURL("https://www.youtube.com/watch?v=oHg5SJYRHA0")
         .setImage("https://i.imgur.com/NzXBam8.png`")
         .addField("CANDIDATES", embedMessage, true)
         .setFooter("Please remember to vote. Voting will only last for a period of time");
 
+
+    if(Math.random() > 0.9) embed.setURL("https://www.youtube.com/watch?v=oHg5SJYRHA0");
 
     const msg = await channel.send(embed);
 

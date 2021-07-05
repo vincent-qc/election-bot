@@ -13,6 +13,8 @@ module.exports.run = async (bot, message, args) => {
 
     const indexToEmoji = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
+    const votedUsers = [];
+
     const candidates = data.users;
     let votes = [];
 
@@ -22,7 +24,16 @@ module.exports.run = async (bot, message, args) => {
         const emoji = indexToEmoji[candidates.indexOf(user)];
         const fetchedMessage = await cacheChannel.messages.fetch(data.msgID);
         const reactions = await fetchedMessage.reactions.resolve(emoji).users.fetch().then(userList => {
-            return userList.map((user) => user.id)
+            const returnedUserList = [];
+
+            userList.map((user) => user.id).forEach(u => {
+              if(!votedUsers.includes(u)) {
+                returnedUserList.push(u);
+                votedUsers.push(u);
+              }
+            });
+
+            return returnedUserList;
         });
         await votes.push(reactions.length);
     });
