@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args) => {
 
     const indexToEmoji = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
-    const votedUsers = [];
+    const votedUsers = ["860937161679568928"];
 
     const candidates = data.users;
     let votes = [];
@@ -31,7 +31,7 @@ module.exports.run = async (bot, message, args) => {
             const returnedUserList = [];
 
             userList.map((user) => user.id).forEach(u => {
-              if(!votedUsers.includes(u) || u != "860937161679568928") {
+              if(!votedUsers.includes(u)) {
                 returnedUserList.push(u);
                 votedUsers.push(u);
               }
@@ -80,16 +80,16 @@ module.exports.run = async (bot, message, args) => {
           embed
           .setTitle("RESULTS")
           .setColor("#EE3030")
-          .setImage("https://i.redd.it/dvj5rg226de41.jpg")
+          .setImage("https://cdn.discordapp.com/attachments/641299933164732417/861684454867206155/Untitled-1.png")
           .addField("Tie!", `There was a tie between ${formatTiedUsers(tiedUsers)}`, true)
-          .setFooter(`Both with a total of ${highestVote - 1} votes`);
+          .setFooter(`Both with a total of ${highestVote} votes`);
       } else {
         embed
           .setTitle("RESULTS")
           .setColor("#EE3030")
           .setImage("https://i.redd.it/dvj5rg226de41.jpg")
           .addField("The Winner Is", candidates[votes.indexOf(highestVote)])
-          .setFooter(`With a total of ${highestVote - 1} votes`);
+          .setFooter(`With a total of ${highestVote} votes`);
       }
   
       await bot.channels.cache.get(data.channelID).send(embed);
