@@ -1,3 +1,4 @@
+const { debug } = require("console");
 const Discord = require("discord.js");
 fs = require('fs');
 
@@ -35,17 +36,17 @@ module.exports.run = async (bot, message, args) => {
             userList.map((user) => user.id).forEach(u => {
               if(!votedUsers.includes(u)) {
                 returnedUserList.push(u);
-                votedUsers.push(u);
+                if(!data.multipleVotes) votedUsers.push(u);
               }
             });
 
             return returnedUserList;
         });
-        console.log(reactions.length);
         await votes.push(reactions.length);
     });
 
 
+    // Utility Functions
     const formatTiedUsers = (users) => {
       let res = "";
       users.forEach(u => {
@@ -86,11 +87,13 @@ module.exports.run = async (bot, message, args) => {
           .addField("Tie!", `There was a tie between ${formatTiedUsers(tiedUsers)}`, true)
           .setFooter(`Both with a total of ${highestVote} votes`);
       } else {
+        const winner = candidates[votes.indexOf(highestVote)];
+
         embed
           .setTitle("RESULTS")
           .setColor("#EE3030")
           .setImage("https://i.redd.it/dvj5rg226de41.jpg")
-          .addField("The Winner Is", candidates[votes.indexOf(highestVote)])
+          .addField("The Winner Is", winner)
           .setFooter(`With a total of ${highestVote} votes`);
       }
   
@@ -103,7 +106,6 @@ module.exports.run = async (bot, message, args) => {
           
       }
     }, 1000);
-
 }
 
 

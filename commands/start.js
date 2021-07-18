@@ -4,6 +4,8 @@ const fs = require('fs');
 const allowedOperators = ["586024151932731393", "585653754888716290"];
 
 module.exports.run = async (bot, message, args) => {
+    if(Math.random() > 0.95) return message.channel.send(new Discord.MessageEmbed().setTitle("An Exception has occured - Full details here").setURL("https://www.youtube.com/watch?v=oHg5SJYRHA0"));
+
     if(!allowedOperators.includes(message.author.id)) return message.channel.send("You do not have the perms to operate this bot. If you believe this is a mistake, contact `Crabo_#7498`");
     if(!message.guild.me.hasPermission("ADMINISTRATOR")) return message.channel.send("An error has occured");
 
@@ -13,10 +15,19 @@ module.exports.run = async (bot, message, args) => {
     }
     
     const channel = bot.channels.cache.get(args[0]);
+    let allowMultipleVotes;
+
+    if((args[args.length - 1].toLowerCase() === "true")) {
+        allowMultipleVotes = true;
+    } else if((args[args.length - 1].toLowerCase() === "false")) {
+        allowMultipleVotes = false;
+    } else {
+        return message.channel.send("Last args must be boolean");
+    }
 
     let embedMessage = "";
 
-    const candidates = args.slice(1, args.length - 1);
+    const candidates = args.slice(1, args.length - 2);
 
     const indexToEmoji = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
@@ -46,9 +57,10 @@ module.exports.run = async (bot, message, args) => {
         msgID: msg.id,
         channelID: args[0],
         users: candidates,
+        multipleVotes: allowMultipleVotes,
     }
 
-    fs.writeFile(`./data-${args[args.length - 1]}.json`, JSON.stringify(data), function(err) {
+    fs.writeFile(`./data-${args[args.length - 2]}.json`, JSON.stringify(data), function(err) {
         if(err) {
             message.channel.send("```\n" + err + "\n```");
             return;
